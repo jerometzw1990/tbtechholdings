@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TB Tech Holdings</title>
+<meta name="description" content="TB Tech Holdings Limited designs, builds and scales blockchain, Web3 and AI systems, from architecture through to production.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230D1226'/%3E%3Cg transform='translate(22 22) scale(1.3125)'%3E%3Cpath fill='%236E86FF' d='M32 5 54 17.5 32 30 10 17.5z'/%3E%3Cpath fill='%23fff' d='M8 21 30 33.5V59L8 46.5z'/%3E%3Cpath fill='%236E86FF' opacity='.55' d='M56 21 34 33.5V59L56 46.5z'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a left-aligned corporate page on a 12-column feel; the logo's stacked half-round "B" blocks recur as the hero stack and step markers. */
+:root{
+  --bg:#F3F5FA; --surface:#FFFFFF; --ink:#0D1226; --muted:#565D76; --line:#D8DDEA;
+  --accent:#2A4BFF; --accent-ink:#FFFFFF; --accent-soft:#E2E7FF;
+  --band:#0D1226; --band-ink:#FFFFFF; --band-muted:#A9B0C9; --band-accent:#6E86FF;
+  --ok:#0F7A4D; --err:#B3261E;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --wrap:1160px; --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A0E1F; --surface:#121834; --ink:#EEF1FA; --muted:#A0A8C4; --line:#262E52;
+    --accent:#7C92FF; --accent-ink:#0A0E1F; --accent-soft:#1B2456;
+    --band:#161D42; --band-ink:#FFFFFF; --band-muted:#B4BBD6; --band-accent:#8FA2FF;
+    --ok:#5FD19E; --err:#FF8A80; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A0E1F; --surface:#121834; --ink:#EEF1FA; --muted:#A0A8C4; --line:#262E52;
+  --accent:#7C92FF; --accent-ink:#0A0E1F; --accent-soft:#1B2456;
+  --band:#161D42; --band-ink:#FFFFFF; --band-muted:#B4BBD6; --band-accent:#8FA2FF;
+  --ok:#5FD19E; --err:#FF8A80; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+img,svg{max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.015em}
+h1{font-size:clamp(2.4rem,5.6vw,4.3rem);font-weight:700}
+h2{font-size:clamp(1.8rem,3.4vw,2.7rem);font-weight:700}
+h3{font-size:1.3rem;font-weight:700;line-height:1.2}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+section{padding:88px 0}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.lede{color:var(--muted);font-size:1.12rem;max-width:60ch}
+.head{display:flex;flex-direction:column;gap:14px;margin-bottom:44px;max-width:760px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:70px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo svg{width:40px;height:40px;flex:none}
+.logo .t{fill:var(--ink)} .logo .b{fill:var(--accent)} .logo .s{opacity:.55}
+.logo-name{display:flex;flex-direction:column;line-height:1}
+.logo-name b{font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.01em}
+.logo-name span{font-size:.62rem;letter-spacing:.34em;font-weight:600;color:var(--muted);margin-top:5px}
+nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;font-size:.95rem;font-weight:500;color:var(--muted)}
+nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:999px;font:600 .97rem var(--body);text-decoration:none;border:1.5px solid transparent;cursor:pointer;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-ghost{border-color:var(--line);color:var(--ink);background:var(--surface)}
+.btn-sm{padding:10px 18px;font-size:.9rem}
+.menu{display:none;background:none;border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--ink);font:600 .9rem var(--body);cursor:pointer}
+
+/* hero */
+.hero{padding:76px 0 56px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-copy{display:flex;flex-direction:column;gap:22px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.stack{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:10px}
+.stack-top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.layer{display:flex;align-items:center;gap:14px;padding:16px 22px 16px 16px;border-radius:10px 999px 999px 10px;background:var(--accent-soft);font-weight:600;font-size:.98rem}
+.layer i{font:500 .76rem var(--mono);font-style:normal;color:var(--accent)}
+.layer:nth-child(2){width:76%} .layer:nth-child(3){width:84%} .layer:nth-child(4){width:92%}
+.layer:nth-child(5){width:100%;background:var(--accent);color:var(--accent-ink)} .layer:nth-child(5) i{color:var(--accent-ink)}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:60px;border-top:1px solid var(--line)}
+.fact{padding:22px 20px 0 0}
+.fact b{display:block;font-family:var(--display);font-size:2.1rem;line-height:1;font-variant-numeric:tabular-nums}
+.fact span{color:var(--muted);font-size:.92rem}
+
+/* about */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:12px}
+.card p{color:var(--muted)}
+.tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+/* practices */
+.grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.practice ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;border-top:1px solid var(--line);padding-top:16px}
+.practice li{display:flex;gap:10px;align-items:baseline;font-size:.97rem}
+.practice li::before{content:"";flex:none;width:9px;height:9px;border-radius:2px 9px 9px 2px;background:var(--accent);transform:translateY(-1px)}
+.num{font:500 .8rem var(--mono);color:var(--accent)}
+
+/* services */
+.alt{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.svc{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.svc div{padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.svc b{font-family:var(--display);font-size:1.08rem}
+.svc span{color:var(--muted);font-size:.94rem}
+
+/* approach */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:s;list-style:none;margin:0;padding:0}
+.steps li{counter-increment:s;padding:24px 0 0;border-top:2px solid var(--ink);display:flex;flex-direction:column;gap:8px}
+.steps li::before{content:"0" counter(s);font:500 .8rem var(--mono);color:var(--accent)}
+.steps p{color:var(--muted);font-size:.97rem}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:44px;align-items:center}
+.tools span{font:500 .85rem var(--mono);padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.tools .tag{border:0;background:none;padding-left:0}
+
+/* faq */
+.faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:20px 0;display:flex;justify-content:space-between;gap:20px;font-family:var(--display);font-weight:700;font-size:1.1rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:400 1.4rem var(--mono);color:var(--accent);line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);padding:0 0 22px;max-width:62ch}
+
+/* band */
+.band{background:var(--band);color:var(--band-ink);border-radius:24px;padding:56px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:28px}
+.band h2{max-width:18ch}
+.band p{color:var(--band-muted);margin-top:12px;max-width:46ch}
+.band .btn{background:var(--band-accent);color:#0A0E1F}
+
+/* contact */
+.contact{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.office{padding:20px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.office address{font-style:normal;color:var(--muted);font-size:.98rem}
+form.card{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label{font-size:.86rem;font-weight:600}
+input,select,textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;width:100%}
+textarea{min-height:130px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+.form-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+#formStatus{font-size:.94rem;font-weight:500}
+#formStatus.ok{color:var(--ok)} #formStatus.err{color:var(--err)}
+.hp{position:absolute;left:-9999px}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:48px 0 32px;font-size:.93rem}
+.foot{display:grid;grid-template-columns:1.4fr .6fr 1fr;gap:40px}
+.foot p,.foot address{color:var(--muted);font-style:normal}
+.foot h4{font:500 .74rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+.foot ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.foot .tag{font-weight:500}.foot a{text-decoration:none} .foot a:hover{color:var(--accent)}
+.legal{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+
+@media (max-width:920px){
+  section{padding:64px 0}
+  .hero-grid,.faq,.contact,.split{grid-template-columns:1fr;gap:36px}
+  .svc,.steps{grid-template-columns:repeat(2,1fr)}
+  .foot{grid-template-columns:1fr 1fr}
+  nav{display:none;position:absolute;top:70px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);padding:16px 24px}
+  nav.open{display:block}
+  nav ul{flex-direction:column;gap:14px}
+  .menu{display:block}
+  .bar .btn{display:none}
+  .band{padding:36px 28px}
+}
+@media (max-width:600px){
+  body{font-size:16px}
+  .grid4,.svc,.steps,.foot,form.card{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr 1fr}
+  .fact{padding-bottom:6px}
+  .layer{width:100%!important}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="TB Tech Holdings home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path class="b" d="M32 5 54 17.5 32 30 10 17.5z"/><path class="t" d="M8 21 30 33.5V59L8 46.5z"/><path class="b s" d="M56 21 34 33.5V59L56 46.5z"/></svg>
+      <span class="logo-name"><b>TB Tech</b><span>HOLDINGS</span></span>
+    </a>
+    <nav id="nav" aria-label="Primary">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#practices">Practices</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#contact">Start a project</a>
+    <button class="menu" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Blockchain · Web3 · Applied AI</span>
+        <h1>Infrastructure and products for the <em>on&#8209;chain economy</em>.</h1>
+        <p class="lede">TB Tech Holdings designs, builds and scales Web3 and AI systems. We take teams from first architecture sketch to software running in production, and stay on to support it.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#contact">Start a project</a>
+          <a class="btn btn-ghost" href="#practices">See our practices</a>
+        </div>
+      </div>
+      <div class="stack" aria-label="Our four practices, layered as one stack">
+        <div class="stack-top"><span>One delivery stack</span><span>04 layers</span></div>
+        <div class="layer"><i>04</i>AI agents</div>
+        <div class="layer"><i>03</i>Product development</div>
+        <div class="layer"><i>02</i>Web3 UI/UX design</div>
+        <div class="layer"><i>01</i>Blockchain architecture</div>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>4</b><span>practices under one roof</span></div>
+      <div class="fact"><b>6</b><span>stage delivery loop</span></div>
+      <div class="fact"><b>2</b><span>offices: Hong Kong and Cayman Islands</span></div>
+      <div class="fact"><b>1</b><span>team from concept to deployment</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="alt">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">About</span>
+      <h2>A build partner that stays through deployment.</h2>
+      <p class="lede">We pair blockchain engineers, product designers and AI practitioners in one team, so strategy, design and engineering decisions get made together and nothing is lost in a handover.</p>
+    </div>
+    <div class="split">
+      <div class="card">
+        <span class="tag">Mission</span>
+        <h3>Dependable infrastructure for teams building on-chain.</h3>
+        <p>We provide reliable, modern blockchain infrastructure and development services that let organisations move from an idea to a system their users can trust.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Vision</span>
+        <h3>A more connected, transparent and decentralised future.</h3>
+        <p>We want open networks to be as dependable and easy to use as the systems they replace, and we measure our work by how well it holds up in production.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="practices">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Practices</span>
+      <h2>Four disciplines, one delivery team.</h2>
+      <p class="lede">Engage one practice for a defined piece of work, or all four for a full build.</p>
+    </div>
+    <div class="grid4">
+      <article class="card practice">
+        <span class="num">01</span>
+        <h3>Blockchain architecture</h3>
+        <p>The foundations: networks, bridges and proving systems designed for the load and the threat model you will face.</p>
+        <ul><li>Blockchain infrastructure development</li><li>Cross-chain bridge development</li><li>Developer tooling and APIs</li><li>Zero-knowledge infrastructure</li></ul>
+      </article>
+      <article class="card practice">
+        <span class="num">02</span>
+        <h3>Web3 UI/UX design</h3>
+        <p>Interfaces that make wallets, signatures and gas understandable to people who have never used them.</p>
+        <ul><li>Web3 product design</li><li>UX and design audits</li><li>Web3 brand identity</li></ul>
+      </article>
+      <article class="card practice">
+        <span class="num">03</span>
+        <h3>Full-cycle product development</h3>
+        <p>Contracts, back end and front end built and tested as one product, ready for audit and mainnet.</p>
+        <ul><li>DeFi solutions</li><li>Smart contract development</li><li>dApp development</li></ul>
+      </article>
+      <article class="card practice">
+        <span class="num">04</span>
+        <h3>AI agent development</h3>
+        <p>Agents and automation that take on repeatable work, wired into your data and your on-chain systems.</p>
+        <ul><li>AI solutions and automation</li><li>Process optimisation</li><li>Agents that act on on-chain data</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="alt">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Services</span>
+      <h2>Support across the full build cycle.</h2>
+    </div>
+    <div class="svc">
+      <div><b>Technology strategy</b><span>Chain, model and vendor choices, set out before money is committed.</span></div>
+      <div><b>Smart contract development</b><span>Solidity contracts written for testability and audit.</span></div>
+      <div><b>Security and design audits</b><span>Independent review of contracts, architecture and user flows.</span></div>
+      <div><b>Cross-chain integration</b><span>Bridges and messaging between the networks your users are on.</span></div>
+      <div><b>dApp and wallet builds</b><span>Front ends, indexers and wallet flows shipped as one product.</span></div>
+      <div><b>ZK infrastructure</b><span>Rollup deployment and proof systems for scale and privacy.</span></div>
+      <div><b>AI application build</b><span>LLM applications and retrieval pipelines on your own data.</span></div>
+      <div><b>AI agents and automation</b><span>Agents that monitor, decide and act inside set guardrails.</span></div>
+      <div><b>MVP and proof-of-concept sprints</b><span>A working slice in front of users, fast.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="approach">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Approach</span>
+      <h2>A delivery loop you can see into.</h2>
+      <p class="lede">Short iterations, working software at each stage, and a clear decision point before the next one starts.</p>
+    </div>
+    <ol class="steps">
+      <li><h3>Discover</h3><p>We map goals, constraints and the assumptions most likely to sink the project.</p></li>
+      <li><h3>Architect</h3><p>System design, chain and model selection, and a build plan with costs attached.</p></li>
+      <li><h3>Prototype</h3><p>An early working slice, tested with real users and real data.</p></li>
+      <li><h3>Build and audit</h3><p>Production engineering with security review and testing running alongside.</p></li>
+      <li><h3>Launch</h3><p>Deployment to cloud or mainnet, with monitoring and a documented handover.</p></li>
+      <li><h3>Support</h3><p>We measure, refine and extend, or step back once your team can run it alone.</p></li>
+    </ol>
+    <div class="tools">
+      <span class="tag">We build with</span>
+      <span>Solidity</span><span>Hardhat</span><span>Wormhole</span><span>zkSync</span><span>EVM networks</span><span>LLM and RAG pipelines</span>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="alt">
+  <div class="wrap faq">
+    <div class="head" style="margin:0">
+      <span class="eyebrow">FAQ</span>
+      <h2>Questions we hear first.</h2>
+      <p class="lede">Anything else, ask us through the form below.</p>
+    </div>
+    <div>
+      <details open><summary>Do you help with strategy before development?</summary><p>Yes. Most engagements start with a short discovery phase that ends in an architecture and a costed build plan. You can take that plan anywhere.</p></details>
+      <details><summary>Can you combine blockchain and AI in one project?</summary><p>Yes, and it is a growing share of our work. A typical example is an AI agent that reads on-chain data and acts on it within limits you set.</p></details>
+      <details><summary>How long does a project take?</summary><p>A proof of concept usually takes weeks. A production platform takes months and is delivered in iterations, so you see working software throughout.</p></details>
+      <details><summary>Do you work with both startups and enterprises?</summary><p>Both. We adjust team size and process to fit, from a founder with a whitepaper to an established business adding an on-chain product.</p></details>
+      <details><summary>Can we engage you for a single piece of work?</summary><p>Yes. A design audit, a contract build or a bridge integration can each be scoped as a standalone engagement.</p></details>
+      <details><summary>How do we get started?</summary><p>Send us a note through the contact form with a few lines about what you are building. We will come back to arrange a first call.</p></details>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="band">
+      <div>
+        <h2>Ready to build?</h2>
+        <p>Tell us what you are working on. We will tell you how we would approach it and what it would take.</p>
+      </div>
+      <a class="btn" href="#contact">Start your project</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="alt">
+  <div class="wrap contact">
+    <div>
+      <div class="head" style="margin-bottom:28px">
+        <span class="eyebrow">Contact</span>
+        <h2>Let's build together.</h2>
+        <p class="lede">Email <a href="mailto:info@tbtechholdings.com" class="js-email">info@tbtechholdings.com</a> or use the form.</p>
+      </div>
+      <div class="office">
+        <span class="tag">Hong Kong office</span>
+        <address>Unit D 3, 11/F, Luk Hop Industrial Building,<br>No. 8 Luk Hop Street, San Po Kong, Hong Kong</address>
+      </div>
+      <div class="office">
+        <span class="tag">Cayman Islands office</span>
+        <address>Suite 2206, Cassia Court, 72 Market Street,<br>Camana Bay, George Town, Grand Cayman,<br>KY1-1209, Cayman Islands</address>
+      </div>
+    </div>
+    <form id="contactForm" class="card" novalidate>
+      <div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" required></div>
+      <div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="company">Company</label><input id="company" name="company" autocomplete="organization"></div>
+      <div class="field"><label for="phone">Contact number</label><input id="phone" name="phone" type="tel" autocomplete="tel"></div>
+      <div class="field full"><label for="topic">What can we help with?</label>
+        <select id="topic" name="topic">
+          <option>Blockchain architecture</option><option>Web3 UI/UX design</option><option>Product development</option><option>AI agents</option><option>Not sure yet</option>
+        </select>
+      </div>
+      <div class="field full"><label for="message">Project details</label><textarea id="message" name="message" required></textarea></div>
+      <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="form-foot">
+        <button class="btn btn-primary" type="submit" id="sendBtn">Send message</button>
+        <span id="formStatus" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="logo" href="#top" aria-label="TB Tech Holdings home" style="margin-bottom:16px">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path class="b" d="M32 5 54 17.5 32 30 10 17.5z"/><path class="t" d="M8 21 30 33.5V59L8 46.5z"/><path class="b s" d="M56 21 34 33.5V59L56 46.5z"/></svg>
+          <span class="logo-name"><b>TB Tech</b><span>HOLDINGS</span></span>
+        </a>
+        <p style="max-width:40ch">Blockchain, Web3 and AI systems, designed, built and supported by one team.</p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul><li><a href="#about">About</a></li><li><a href="#practices">Practices</a></li><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li></ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <address><a href="mailto:info@tbtechholdings.com" class="js-email">info@tbtechholdings.com</a><br><br><b class="tag">Hong Kong office</b><br>Unit D 3, 11/F, Luk Hop Industrial Building, No. 8 Luk Hop Street, San Po Kong, Hong Kong<br><br><b class="tag">Cayman Islands office</b><br>Suite 2206, Cassia Court, 72 Market Street, Camana Bay, George Town, Grand Cayman, KY1-1209, Cayman Islands</address>
+      </div>
+    </div>
+    <div class="legal">© <span id="yr">2026</span> TB Tech Holdings Limited. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+/* ── Site settings: edit these two lines ───────────────────────── */
+var FORMSPREE_ID = "xdegopqr";             // e.g. "xyzabcde" from formspree.io/f/xyzabcde
+var CONTACT_EMAIL = "info@tbtechholdings.com"; // shown on the page and used in fallbacks
+/* ──────────────────────────────────────────────────────────────── */
+
+document.getElementById("yr").textContent = new Date().getFullYear();
+document.querySelectorAll(".js-email").forEach(function(a){a.textContent=CONTACT_EMAIL;a.href="mailto:"+CONTACT_EMAIL;});
+
+var nav=document.getElementById("nav"),menuBtn=document.getElementById("menuBtn");
+menuBtn.addEventListener("click",function(){var o=nav.classList.toggle("open");menuBtn.setAttribute("aria-expanded",o);});
+nav.addEventListener("click",function(e){if(e.target.tagName==="A"){nav.classList.remove("open");menuBtn.setAttribute("aria-expanded","false");}});
+
+var form=document.getElementById("contactForm"),statusEl=document.getElementById("formStatus"),sendBtn=document.getElementById("sendBtn");
+function say(msg,cls){statusEl.textContent=msg;statusEl.className=cls||"";}
+form.addEventListener("submit",function(e){
+  e.preventDefault();
+  if(!form.checkValidity()){say("Please add your name, a valid email and a few project details.","err");form.reportValidity&&form.reportValidity();return;}
+  if(FORMSPREE_ID==="YOUR_FORM_ID"){say("This form is not connected yet. Please email "+CONTACT_EMAIL+".","err");return;}
+  sendBtn.disabled=true;say("Sending…");
+  fetch("https://formspree.io/f/"+FORMSPREE_ID,{method:"POST",headers:{Accept:"application/json"},body:new FormData(form)})
+    .then(function(r){if(!r.ok)throw new Error();form.reset();say("Message sent. We will be in touch shortly.","ok");})
+    .catch(function(){say("Could not send. Please email "+CONTACT_EMAIL+" instead.","err");})
+    .then(function(){sendBtn.disabled=false;});
+});
+</script>
+</body>
+</html>
